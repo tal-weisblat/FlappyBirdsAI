@@ -1,10 +1,11 @@
 
 
 import pygame 
+import numpy as np
 import random 
+import torch 
+import torch.nn as nn 
 # import os
-# import torch 
-# import torch.nn as nn 
 
 
 # WINDOW 
@@ -34,7 +35,7 @@ BIRD_FALL   = 1.5
 # PILLARS 
 PILLAR_WIDTH  = 50
 PILLAR_HEIGHT = 200 
-PILLAR_GAP    = 130
+PILLAR_GAP    = 250
 PILLARS_DIST  = 300
 
 
