@@ -2,10 +2,11 @@
 
 import pygame 
 import numpy as np
+import os
 import random 
 import torch 
 import torch.nn as nn 
-# import os
+
 
 
 # WINDOW 
@@ -28,17 +29,21 @@ COLOR_3 = (255,0,127)
 # BIRDS 
 BIRD_WIDTH  = 20
 BIRD_HEIGHT = 20
-BIRD_VEL    = 1.2
+BIRD_VEL    = 4
 BIRD_JUMP   = 30
 BIRD_FALL   = 1.5
+BIRDS_NUM   = 150
 
 # PILLARS 
 PILLAR_WIDTH  = 50
 PILLAR_HEIGHT = 200 
-PILLAR_GAP    = 250
+PILLAR_GAP    = 230
 PILLARS_DIST  = 300
 
+# SOUND 
+DUPLICATION_SOUND = pygame.mixer.Sound(os.path.join('resource/sound', 'duplicate_parent.wav'))
 
+# TEXT 
 
 
 

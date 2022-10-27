@@ -2,7 +2,7 @@
 from game_settings import * 
 
 
-# -------------------------------------------- NN -----------------------------------------------
+# --------------------------------------------- NN -----------------------------------------------
 class Net(nn.Module):
     def __init__(self,input,H,output):
         super(Net,self).__init__()
@@ -13,9 +13,9 @@ class Net(nn.Module):
         x=self.linear2(x)
         return x
 
+
 # -------------------------------------------- BIRD ---------------------------------------------
 class CreateBird():
-
     def __init__(self):
         self.x = GAME_HEIGHT/5  
         self.y = GAME_HEIGHT/2
@@ -23,49 +23,67 @@ class CreateBird():
         self.height = BIRD_HEIGHT
         self.rect = pygame.Rect (self.x, self.y, self.width, self.height)
         self.rect.topleft = (self.x,self.y)   
-        self.brain = Net(4,4,1)
+        self.net = Net(4,4,1)
         
-    def think(self, x_pillar, y_pillar):
+
+# ----------------------------------------- BIRD-LIST -----------------------------------------
+class CreateBirdList(CreateBird):
+
+    def __init__(self):
+        self.list = [] 
+        for i in range(BIRDS_NUM):
+            bird = CreateBird()
+            self.list.append(bird)
+            
+    def add_bird(self):
+        bird = CreateBird()
+        self.list.append(bird)
         
-        x_bird = float(self.rect.x)   
-        y_bird = float(self.rect.y) 
-
-        input = torch.tensor([[x_bird, y_bird, x_pillar, y_pillar]])
-        output = self.brain.forward(input)
-    
-        
-        val = float(output[0][0])  
-        val = (0.5*val) + 0.5
-        #print(val)
-        
-        if val > 0.3: 
-            self.y = self.y - BIRD_JUMP 
-            self.rect.topleft = (self.x,self.y)
-
-
-
     def draw(self):
-        pygame.draw.rect(WIN, BLACK, self.rect)
+        for bird in self.list: 
+            pygame.draw.rect(WIN, BLACK, bird.rect)
+    
+    def remove_bird(self, bird):
+        self.list.remove(bird)
+    
+    def bird_jump(self, pillar_list):   
+        x,y = pillar_list.last_pillar_coordinates()
+        x_pillar = float(x)
+        y_pillar = float(y)
+        for bird in self.list:     
+            x_bird = float(bird.rect.x)   
+            y_bird = float(bird.rect.y) 
+            input = torch.tensor([[x_bird, y_bird, x_pillar, y_pillar]])
+            output = bird.net.forward(input)    
+            val = float(output[0][0])  
+            val = (0.5*val) + 0.5        
+            if val > 0.3: 
+                bird.y = bird.y - BIRD_JUMP 
+                bird.rect.topleft = (bird.x,bird.y)
 
-    def jump(self, keys, spacebar_pressed): 
-        if keys[pygame.K_SPACE] and (spacebar_pressed == False) : 
-            self.y = self.y - BIRD_JUMP 
-            self.rect.topleft = (self.x,self.y)
-            spacebar_pressed = True 
-            return spacebar_pressed
+    def bird_move(self):
+        for bird in self.list:
+            bird.y += BIRD_FALL 
+            bird.rect.topleft = (bird.x,bird.y)
 
-    def hover(self):
-        self.y += BIRD_FALL 
-        self.rect.topleft = (self.x,self.y)
+    def bird_hit_walls(self, birds_left):
+        for bird in self.list: 
+            if bird.rect.y <= 0: # ceiling 
+                birds_left -= 1 
+                self.list.remove(bird) 
+            if bird.rect.y + BIRD_HEIGHT >= GAME_HEIGHT: # floor
+                birds_left -= 1 
+                self.list.remove(bird) 
+        return birds_left
 
-    def bird_hit_frame(self):
-        if self.rect.y <= 0:   # ceiling 
-            return True 
-        if self.rect.y + BIRD_HEIGHT >= GAME_HEIGHT:   # ground 
-            return True 
-        return False 
+    def bird_hit_pillar(self, birds_left, pillar_list):
+        for bird in self.list: 
+            for pillar in pillar_list.list:
+                if pillar[0].colliderect(bird.rect) or pillar[1].colliderect(bird.rect):
+                    birds_left -= 1
+                    self.list.remove(bird)
 
-
+        return birds_left
 
 
 # ---------------------------------------- PillarList ----------------------------------------
@@ -84,17 +102,12 @@ class PillarList():
         upper_rect = pygame.Rect(x, 0, PILLAR_WIDTH, upper_pillar_height)    
         upper_rect.topleft = (x, 0)
         pillar = (lower_rect, upper_rect)  
-        self.list.append(pillar)                                                # add
+        self.list.append(pillar)   # add
          
     def draw(self):
         for pillar in self.list:
             pygame.draw.rect(WIN, BLACK, pillar[0])
             pygame.draw.rect(WIN, BLACK, pillar[1])
-
-    def move(self):
-        for pillar in self.list: 
-            pillar[0].x -= BIRD_VEL
-            pillar[1].x -= BIRD_VEL
             
     def collision(self, bird): 
         for pillar in self.list:
@@ -102,14 +115,19 @@ class PillarList():
                 return True 
         return False 
         
-
     def handle_pillars(self): 
-        last_pillar = self.list[-1:][0]
-        if last_pillar[0].x <= PILLARS_DIST:
+        # move 
+        for pillar in self.list:      
+            pillar[0].x -= BIRD_VEL
+            pillar[1].x -= BIRD_VEL
+        # remove & add 
+        first_pillar =  self.list[0] 
+        last_pillar  =  self.list[-1]
+        if first_pillar[0].x <= -PILLAR_WIDTH:
+            self.list.remove(first_pillar)
+        if last_pillar[0].x <= PILLARS_DIST:   
             self.add_pillar()
-        if last_pillar[0].x <= 50:
-            self.list.remove(last_pillar)
-
+        
     def last_pillar_coordinates(self):
         last_pillar = self.list[-1:][0]
         x = last_pillar[0].x
