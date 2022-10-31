@@ -1,4 +1,5 @@
 
+from operator import ge
 from game_settings import * 
 from src.objects import CreateBirdList, PillarList
 from src.mutate  import mutateBird
@@ -9,6 +10,8 @@ from src.draw    import draw_game
 
 def flappy_birds():
 
+    start = time.time()
+    generation_number = 1 
     birds_left = BIRDS_NUM
     bird_list = CreateBirdList()
     pillar_list = PillarList()
@@ -34,13 +37,14 @@ def flappy_birds():
         birds_left = bird_list.bird_hit_walls(birds_left)
 
         # draw 
-        draw_game(bird_list, pillar_list)
-        print (birds_left)
+        draw_game(bird_list, pillar_list, generation_number, birds_left, round(time.time()-start,1))
 
         # duplication  
         if birds_left == 1:
-           birds_left = 1 + BIRDS_NUM
-           mutateBird(bird_list, BIRDS_NUM)     
+            start = time.time()
+            generation_number += 1 
+            birds_left = 1 + BIRDS_NUM
+            mutateBird(bird_list, BIRDS_NUM)     
 
 flappy_birds()
 

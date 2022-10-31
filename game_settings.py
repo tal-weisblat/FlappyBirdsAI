@@ -6,13 +6,16 @@ import os
 import random 
 import torch 
 import torch.nn as nn 
+import time 
 
 
 
 # WINDOW 
-GAME_WIDTH  = 700                                              
+WIN_WIDTH   = 900
+WIN_HEIGHT  = 450
+GAME_WIDTH  = 450                                              
 GAME_HEIGHT = 450   
-WIN = pygame.display.set_mode((GAME_WIDTH,GAME_HEIGHT))                      
+WIN = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))                      
 pygame.init()
 pygame.mixer.init()        
 
@@ -40,22 +43,42 @@ PILLAR_HEIGHT = 200
 PILLAR_GAP    = 230
 PILLARS_DIST  = 300
 
-# SOUND 
+# sound  
 DUPLICATION_SOUND = pygame.mixer.Sound(os.path.join('resource/sound', 'duplicate_parent.wav'))
 
-# TEXT 
+# fonts 
+DASHBOARD_FONT    = pygame.font.SysFont('comicsans', 20)
+
+# dashboard 
+X_DASHBOARD      = GAME_WIDTH + PILLAR_WIDTH
+Y_DASHBOARD      = 0 
+WIDTH_DASHBOARD  = WIN_WIDTH - GAME_WIDTH
+HEIGHT_DASHBOARD = GAME_HEIGHT 
+GAP_DASHBOARD    = 15
+
+# generation number 
+def generation_number_text(generation_number):
+    return DASHBOARD_FONT.render('Generation: ' +str(generation_number) ,1, BLACK)
+x_generation = X_DASHBOARD + GAP_DASHBOARD
+y_generation = GAP_DASHBOARD
+
+# generation time 
+def generation_time_text(time):
+    return DASHBOARD_FONT.render('Time: ' +str(time) ,1, BLACK)
+x_time = X_DASHBOARD + GAP_DASHBOARD
+y_time = 5*GAP_DASHBOARD
+
+
+# birds left  
+def birds_number_text(birds_left):
+    return DASHBOARD_FONT.render('Birds left: ' + str(birds_left),1, BLACK)
+x_birds_number = X_DASHBOARD + GAP_DASHBOARD
+y_birds_number = 3*GAP_DASHBOARD
 
 
 
 
 
-
-# SOUND
-# BULLET_FIRED_SOUND = pygame.mixer.Sound(os.path.join('resource/sounds', 'shooting.wav'))
-# FONT 
-# GAME_OVER_FONT  = pygame.font.SysFont('comicsans', 40)             
-# TEXTS
-#gameOver_text    = GAME_OVER_FONT.render('Game over',1, YELLOW)      
 # EVENTS 
 # EXIT_GAME   = pygame.USEREVENT + 1
 
