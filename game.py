@@ -10,7 +10,8 @@ from src.draw    import draw_game
 
 def flappy_birds():
 
-    start = time.time()
+    game_start = time.time()
+    generation_start = time.time()
     generation_number = 1 
     birds_left = BIRDS_NUM
     bird_list = CreateBirdList()
@@ -37,11 +38,13 @@ def flappy_birds():
         birds_left = bird_list.bird_hit_walls(birds_left)
 
         # draw 
-        draw_game(bird_list, pillar_list, generation_number, birds_left, round(time.time()-start,1))
+        game_time = round(time.time()- game_start,1)
+        generation_time = round(time.time()-generation_start,1)
+        draw_game(bird_list, pillar_list, generation_number, birds_left, generation_time, game_time)
 
         # duplication  
         if birds_left == 1:
-            start = time.time()
+            generation_start = time.time()
             generation_number += 1 
             birds_left = 1 + BIRDS_NUM
             mutateBird(bird_list, BIRDS_NUM)     
