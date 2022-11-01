@@ -31,15 +31,11 @@ pygame.init()
 pygame.mixer.init()        
 
 # COLORs
-BLACK   = (0,0,0)
-RED     = (255,0,0)      
-YELLOW  = (255,255,0)    
-PINK    = (255,192,203)  
-WHITE   = (255,255,255)
-COLOR_1 = (128,255,0)
-COLOR_2 = (204,102,0)
-COLOR_3 = (255,0,127)
-BROWN   = (165,42,42)
+BLACK = (0,0,0)  
+GREY  = (105,105,105)
+PINK  = (255,192,203)  
+WHITE = (255,255,255)
+BROWN = (165,42,42)
 
 # BIRDS 
 BIRD_WIDTH  = 20
@@ -54,30 +50,35 @@ PILLAR_HEIGHT = 200
 DUPLICATION_SOUND = pygame.mixer.Sound(os.path.join('resource/sound', 'duplicate_parent.wav'))
 
 # fonts 
-DASHBOARD_FONT    = pygame.font.SysFont('comicsans', 20)
+DASHBOARD_TEXT_FONT    = pygame.font.SysFont('comicsans', 15)
+DASHBOARD_TITLE_FONT    = pygame.font.SysFont('comicsans', 17)
+
 
 
 # DASHBOARD  
 X_DASHBOARD      = GAME_WIDTH + PILLAR_WIDTH
 Y_DASHBOARD      = 0 
-WIDTH_DASHBOARD  = WIN_WIDTH - GAME_WIDTH
+WIDTH_DASHBOARD  = WIN_WIDTH - (GAME_WIDTH + PILLAR_WIDTH)
 HEIGHT_DASHBOARD = GAME_HEIGHT 
-GAP_DASHBOARD    = 15
+GAP_DASHBOARD    = 12
 
-# GENERATION NUMBER 
-def generation_number_text(generation_number): return DASHBOARD_FONT.render('Generation: ' +str(generation_number) ,1, BLACK)
-def birds_number_text(birds_left): return DASHBOARD_FONT.render('Birds left: ' + str(birds_left) + ' / ' + str(BIRDS_NUM),1, BLACK)
-def generation_time_text(time):    return DASHBOARD_FONT.render('Time: ' +str(time) ,1, BLACK)
-def game_time_text(game_time):     return DASHBOARD_FONT.render('Total time: ' +str(game_time) ,1, BLACK)
+# STATUS
+status_text = DASHBOARD_TITLE_FONT.render('Status', 1, BLACK)
+def generation_number_text(generation_number): return DASHBOARD_TEXT_FONT.render('Generation: ' +str(generation_number) ,1, GREY)
+def birds_number_text(birds_left): return DASHBOARD_TEXT_FONT.render('Birds left: ' + str(birds_left) + ' / ' + str(BIRDS_NUM),1, GREY)
+def generation_time_text(time):    return DASHBOARD_TEXT_FONT.render('Time: ' +str(time) ,1, GREY)
+def game_time_text(game_time):     return DASHBOARD_TEXT_FONT.render('Total time: ' +str(game_time) ,1, GREY)
 
-# CONVERGENCE FEATURES 
-number_of_birds_text = DASHBOARD_FONT.render('Birds number: ' + str(BIRDS_NUM) ,1, BROWN)
-birds_velocity_text = DASHBOARD_FONT.render('Birds velocity: ' + str(BIRD_VEL) ,1, BROWN)
-birds_jump_velocity_text = DASHBOARD_FONT.render('Jump velocity: ' + str(BIRD_JUMP_VEL) ,1, BROWN)
-birds_fall_velocity_text = DASHBOARD_FONT.render('Fall velocity: ' + str(BIRD_FALL_VEL) ,1, BROWN)
-pillars_gap_text = DASHBOARD_FONT.render('Pillars gap: ' + str(PILLAR_GAP) ,1, BROWN)
-pillars_distance_text = DASHBOARD_FONT.render('Pillars distance: ' + str(PILLARS_DIST) ,1, BROWN)
-mutate_std_text = DASHBOARD_FONT.render('Mutation STD: ' + str(STD) ,1, BROWN)
+# PARAMETERS (of convergence)  
+parameters_text = DASHBOARD_TITLE_FONT.render('Parameters', 1, BLACK)
+number_of_birds_text = DASHBOARD_TEXT_FONT.render('Birds number: ' + str(BIRDS_NUM) ,1, BROWN)
+birds_velocity_text = DASHBOARD_TEXT_FONT.render('Birds velocity: ' + str(BIRD_VEL) ,1, BROWN)
+birds_jump_velocity_text = DASHBOARD_TEXT_FONT.render('Jump velocity: ' + str(BIRD_JUMP_VEL) ,1, BROWN)
+birds_fall_velocity_text = DASHBOARD_TEXT_FONT.render('Fall velocity: ' + str(BIRD_FALL_VEL) ,1, BROWN)
+pillars_gap_text = DASHBOARD_TEXT_FONT.render('Pillars gap: ' + str(PILLAR_GAP) ,1, BROWN)
+pillars_distance_text = DASHBOARD_TEXT_FONT.render('Pillars distance: ' + str(PILLARS_DIST) ,1, BROWN)
+mutate_std_text = DASHBOARD_TEXT_FONT.render('Mutation STD: ' + str(STD) ,1, BROWN)
 
-
+# SCORE 
+scores_text = DASHBOARD_TITLE_FONT.render('Scores', 1, BLACK)
 
