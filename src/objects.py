@@ -58,12 +58,12 @@ class CreateBirdList(CreateBird):
             val = float(output[0][0])  
             val = (0.5*val) + 0.5        
             if val > 0.3: 
-                bird.y = bird.y - BIRD_JUMP 
+                bird.y = bird.y - BIRD_JUMP_VEL 
                 bird.rect.topleft = (bird.x,bird.y)
 
     def bird_move(self):
         for bird in self.list:
-            bird.y += BIRD_FALL 
+            bird.y += BIRD_FALL_VEL 
             bird.rect.topleft = (bird.x,bird.y)
 
     def bird_hit_walls(self, birds_left):
@@ -125,7 +125,9 @@ class PillarList():
         last_pillar  =  self.list[-1]
         if first_pillar[0].x <= -PILLAR_WIDTH:
             self.list.remove(first_pillar)
-        if last_pillar[0].x <= PILLARS_DIST:   
+        
+        # if last_pillar[0].x <= PILLARS_DIST:   
+        if GAME_WIDTH - (last_pillar[0].x + PILLAR_WIDTH) >= PILLARS_DIST:
             self.add_pillar()
         
     def last_pillar_coordinates(self):
