@@ -1,6 +1,6 @@
 # Flappy-Birds-AI
 
-![Flappy Birds](resouce/image/flappy_birds_demo.gif)
+![Flappy Birds](resource/image/flappy_birds_demo.gif)
 
 
 
