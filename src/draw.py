@@ -3,7 +3,7 @@ from game_settings import *
 
 
 # -------------------------------------- DRAW GAME -----------------------------------------
-def draw_game(bird_list, pillar_list, generation_number, birds_left, generation_time, game_time):
+def draw_game(bird_list, pillar_list, generation_number, birds_left, generation_time, game_time, setup_score):
     WIN.fill(WHITE)
     pygame.draw.rect(WIN, PINK, (X_DASHBOARD, Y_DASHBOARD, WIDTH_DASHBOARD, HEIGHT_DASHBOARD))
 
@@ -24,6 +24,8 @@ def draw_game(bird_list, pillar_list, generation_number, birds_left, generation_
     WIN.blit(mutate_std_text,                           (X_DASHBOARD + GAP_DASHBOARD, 26*GAP_DASHBOARD))
     # scores 
     WIN.blit(scores_text,    (X_DASHBOARD + WIDTH_DASHBOARD/2 - scores_text.get_width()/2, 29*GAP_DASHBOARD))
+    WIN.blit(setup_score_text(setup_score[-10:]), (X_DASHBOARD + GAP_DASHBOARD, 31*GAP_DASHBOARD))
+
 
     
     bird_list.draw()

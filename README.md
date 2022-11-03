@@ -19,4 +19,4 @@
 The aim of this project was initially to explore neuro-evolution algrorithm with the emphasize of neural-networks. Therefore as being such I didn't pay attention to game-graphics in advance. Of course it's possible to add more graphics with the aid of *pygame* library in order to beautify the game.   
 
 # Future work 
-It's in our intention to further develop this AI flappy birds game. Our next step is to add some sort of features to measure the rate of convergence regarding our birds behaviour, and then to optimize it by choosing different architectures and different mutation STDs. 
+It's in our intention to further develop this AI flappy birds game. Our next step is to add some sort of features to measure the rate of convergence regarding our birds behaviour, and then to optimize it by choosing different architectures and different mutation STDs. In our way doing so, I've created a list of time-duration for each birds' generation and presented it under the score header. Currently, the dashboard presents the last 10 results. 

@@ -80,5 +80,6 @@ pillars_distance_text = DASHBOARD_TEXT_FONT.render('Pillars distance: ' + str(PI
 mutate_std_text = DASHBOARD_TEXT_FONT.render('Mutation STD: ' + str(STD) ,1, BROWN)
 
 # SCORE 
-scores_text = DASHBOARD_TITLE_FONT.render('Scores', 1, BLACK)
+scores_text = DASHBOARD_TITLE_FONT.render('Score', 1, BLACK)
+def setup_score_text(setup_score): return DASHBOARD_TEXT_FONT.render(str(setup_score) ,1, GREY)
 
